@@ -13,19 +13,22 @@ For example, given 100, you can reach 1 in five steps with the following route: 
  */
 
 console.log(minSteps(100));
+console.log(minSteps(90));
+
+
 
 function minSteps(n: number) : number {
-    let stepCount = 1;
+    console.log(n)
+    if (n === 1) {
+        return 0;
+    }
     
-    while (n > 1) {
-        let largestDecrement = 1;
-        for(let i = n-1; largestDecrement === 1 && i > 1; i--) {
-            if (n%i === 0) {
-                largestDecrement = i;
-            }
+    let possibleNextSteps = [n-1];
+    for(let i = n-1; i >= Math.ceil(Math.sqrt(n)); i--) {
+        if (n%i === 0) {
+            possibleNextSteps.push(i);
         }
-        stepCount += minSteps(n-largestDecrement);
     }
 
-    return stepCount;
+    return Math.min(...possibleNextSteps.map(val => minSteps(val))) + 1;
 }
